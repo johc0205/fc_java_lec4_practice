@@ -84,6 +84,7 @@ class PersonControllerTest {
                 .andExpect(status().isOk());
 
         //log.info("people deleted : {}", personRepository.findPeopleDeleted());
+        //에러 찾아보기
 
     }
 }
