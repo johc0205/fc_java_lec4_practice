@@ -1,53 +1,63 @@
 package com.example.study_2.repository;
 
 import com.example.study_2.domain.Person;
+import com.example.study_2.domain.dto.Birthday;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
+
+
 @Transactional
 @SpringBootTest
 class PersonRepositoryTest {
     @Autowired
     private PersonRepository personRepository;
+
     @Test
-    void crud(){
-        Person person = new Person();
-        person.setName("john");
-        person.setAge(10);
-        person.setBloodType("A");
+    void findByName(){
+        List<Person> people = personRepository.findByName("tony");
+        Assertions.assertThat(people.size()).isEqualTo(1);
 
-        personRepository.save(person);
-
-        List<Person> result = personRepository.findByName("john");
-
-        Assertions.assertThat(result.size()).isEqualTo(1);
-        Assertions.assertThat(result.get(0).getName()).isEqualTo("john");
-        Assertions.assertThat(result.get(0).getAge()).isEqualTo(10);
-        Assertions.assertThat(result.get(0).getBloodType()).isEqualTo("A");
-
+        Person person = people.get(0);
+        org.junit.jupiter.api.Assertions.assertAll(
+                () -> Assertions.assertThat(person.getName()).isEqualTo("tony"),
+                () -> Assertions.assertThat(person.getHobby()).isEqualTo("reading"),
+                () -> Assertions.assertThat(person.getAddress()).isEqualTo("Seoul"),
+                () -> Assertions.assertThat(person.getBirthday()).isEqualTo(Birthday.of(LocalDate.of(1991,7,10))),
+                () -> Assertions.assertThat(person.getJob()).isEqualTo("officer"),
+                () -> Assertions.assertThat(person.getPhoneNumber()).isEqualTo("010-2222-5555"),
+                () -> Assertions.assertThat(person.isDeleted()).isEqualTo(false)
+        );
     }
 
     @Test
-    void findByBloodType(){
+    void findByNameIfDeleted(){
+        List<Person> people = personRepository.findByName("andrew");
 
-        List<Person> result = personRepository.findByBloodType("A");
-
-        Assertions.assertThat(result.size()).isEqualTo(2);
-        Assertions.assertThat(result.get(0).getName()).isEqualTo("martin");
-        Assertions.assertThat(result.get(1).getName()).isEqualTo("benny");
-
+        Assertions.assertThat(people.size()).isEqualTo(0);
     }
+
     @Test
-    void findByBirthdayBetween(){
+    void findByMonthOfBirthday(){
+        List<Person> people = personRepository.findByMonthOfBirthday(7);
 
-        List<Person> result = personRepository.findByMonthOfBirthday(8);
+        Assertions.assertThat(people.size()).isEqualTo(2);
+        org.junit.jupiter.api.Assertions.assertAll(
+                () -> Assertions.assertThat(people.get(0).getName()).isEqualTo("david"),
+                () -> Assertions.assertThat(people.get(1).getName()).isEqualTo("tony")
+        );
+    }
 
-        Assertions.assertThat(result.size()).isEqualTo(2);
-        Assertions.assertThat(result.get(0).getName()).isEqualTo("martin");
-        Assertions.assertThat(result.get(1).getName()).isEqualTo("sophia");
+    @Test
+    void findPeopleDeleted(){
+        List<Person> people = personRepository.findPeopleDeleted();
+
+        Assertions.assertThat(people.size()).isEqualTo(1);
+        Assertions.assertThat(people.get(0).getName()).isEqualTo("andrew");
     }
 }
