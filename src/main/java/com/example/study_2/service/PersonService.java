@@ -2,9 +2,13 @@ package com.example.study_2.service;
 
 import com.example.study_2.controller.dto.PersonDto;
 import com.example.study_2.domain.Person;
+import com.example.study_2.exception.PersonNotFoundException;
+import com.example.study_2.exception.RenameIsNotPermittedException;
 import com.example.study_2.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +19,11 @@ import java.util.List;
 public class PersonService {
     @Autowired
     private PersonRepository personRepository;
+
+    public Page<Person> getAll(Pageable pageable){
+        return personRepository.findAll(pageable);
+    }
+
     public List<Person> getPeopleByName(String name) {
         return personRepository.findByName(name);
     }
@@ -35,10 +44,10 @@ public class PersonService {
 
     @Transactional
     public void modify(Long id, PersonDto personDto) {
-        Person person = personRepository.findById(id).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
+        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
 
         if (!person.getName().equals(personDto.getName())) {
-            throw new RuntimeException("이름이 다릅니다.");
+            throw new RenameIsNotPermittedException();
         }
 
         person.set(personDto);
@@ -48,7 +57,7 @@ public class PersonService {
 
     @Transactional
     public void modify(Long id, String name) {
-        Person person = personRepository.findById(id).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
+        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
 
         person.setName(name);
 
@@ -57,7 +66,7 @@ public class PersonService {
 
     @Transactional
     public void delete(Long id) {
-        Person person = personRepository.findById(id).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
+        Person person = personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
 
         person.setDeleted(true);
 

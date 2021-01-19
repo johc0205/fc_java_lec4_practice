@@ -1,0 +1,84 @@
+- SpringBoot 특성
+    - 스프링의 생산성
+    - Coding By Convention 활용 => 개발자가 특별히 신경쓰지 않은 부분은 스프링부트 스타터를 통해 default로 설정
+
+- 학습한 내용
+    - 스프링부트 프로젝트 생성
+    - Gradle을 이용한 의존성 관리
+    - 에자일에서 말하는 Iteration(반복주기)개발로 2-Cycle 개발 진행
+
+- 1-cycle 내용정리
+    - JPA
+        - Entity 생성
+        - @OneToOne Relation
+            - CascadeType
+            - FetchType
+            - Optional, orphanRemoval
+        - QueryMethod
+        - @Embedded
+        - @Valid
+        - @Query
+        - @Where (for Soft-Delete)
+        - Data.sql
+    - SpringMVC
+        - @GetMapping
+        - @PostMapping
+        - @PutMapping
+        - @PatchMapping
+        - @DeleteMapping
+        - @PathVariable
+        - @RequestBody
+    - Lombok
+        - @Getter
+        - @Setter
+        - @ToString
+        - @Constructor
+        - @EqualsAndHashCode
+        - @Data
+    - SpringTest
+    - Java8
+        - Stream
+        - Filter
+        - Map
+
+- 2-cycle 내용정리
+    - SpringMVC
+        - CustomJsonSerializer
+    - SpringTest
+        - MockMvc Test
+        - Matcher
+        - Junit5
+    - MockTest
+        - Mockito
+        - CustomArgumentMatcher
+    - Exception Handling
+        - CustomException
+        - ExceptionHandler
+        - GlobalExceptionHandler
+    - Parameter Validator
+        - @NotEmpty
+        - @NotBlank
+        - @Valid
+    - Paging
+        - Pageable
+        - Page<T>
+
+- 앞으로 해 볼 것
+    - FrontEnd 개발
+        - Web
+            - VueJs, ReactJs
+        - App
+            - Android App
+            - IOS App
+        - DB 연동
+            - MySQL
+          - MongoDB
+    - Spring(Boot)의 중급 활용
+        - 추가적인 설정
+        - Customizing 설정
+    - JPA 중급 활용
+        - 다양한 Relation
+        - QueryDSL / Jooq
+    - 로직의 확장
+        - 추가적인 스펙
+
